@@ -17,7 +17,6 @@
 	/* Define the debug constant to allow the logger to be aware of the current logging state */
 	define("__DEBUG__", false);
 	
-	require_once(__PROJECTROOT__."/includes/configParser.php");
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
 	require_once(__PROJECTROOT__."/includes/eventHandling.php");
@@ -40,13 +39,35 @@
 	 *	
 	 *	new Connection();
 	 */
-	$networks = ConfigParser::parseFiles(glob(__PROJECTROOT__."/conf/networks/*"));
-	foreach ($networks as $network) {
-		$network = ConfigParser::getAssoc($network);
-		$network['port'] = intval($network['port']);
-		$network['ssl'] = boolval($network['ssl']);
-		$network['channels'] = explode(',', $network['channels']);
-		ConnectionManagement::newConnection(new Connection($network['netname'], $network['address'], $network['port'], $network['ssl'], $network['pass'], $network['nick'], $network['user'], $network['realname'], $network['channels'], $network['nspass']));
+	$networks = glob(__PROJECTROOT__."/conf/networks/*");
+	foreach ($networks as $file) {
+		$network = parse_ini_file($file, true);
+		
+		if (isset($network['netname']) && isset($network['address']) && isset($network['port']) && isset($network['nick']) && isset($network['user']) && isset($network['realname'])) {
+			if (!isset($network['ssl'])) {
+				$network['ssl'] = false;
+			}
+			
+			if (!isset($network['pass'])) {
+				$network['pass'] = null;
+			}
+			
+			if (!isset($network['channels'])) {
+				$network['channels'] = null;
+			}
+			
+			if (!isset($network['nspass'])) {
+				$network['channels'] = null;
+			}
+			
+			$network['port'] = intval($network['port']);
+			$network['ssl'] = boolval($network['ssl']);
+			$network['channels'] = explode(',', $network['channels']);
+			ConnectionManagement::newConnection(new Connection($network['netname'], $network['address'], $network['port'], $network['ssl'], $network['pass'], $network['nick'], $network['user'], $network['realname'], $network['channels'], $network['nspass']));
+		}
+		else {
+			Logger::info("Network in file \"".$file."\" failed to parse.");
+		}
 	}
 	
 	/* Don't edit below this line unless you know what you're doing. */
@@ -74,7 +95,7 @@
 	}
 	
 	function boolval($input) {
-		if (trim($input) == "true") {
+		if (trim($input) == "true" || $input == true) {
 			return true;
 		}
 		return false;
