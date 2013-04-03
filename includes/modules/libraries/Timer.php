@@ -7,10 +7,10 @@
 			foreach ($this->timers as $id => $timer) {
 				if ($timer != null && $timer["runtime"] <= microtime(true)) {
 					if (isset($class->name)) {
-						Logger::debug("Processing timer for '".$class->name."->".$callback."()'");
+						Logger::debug("Processing timer for '".$timer["class->name"]."->".$timer["callback"]."()'");
 					}
 					else {
-						Logger::debug("Processing timer for '".$callback."()'");
+						Logger::debug("Processing timer for '".$timer["callback"]."()'");
 					}
 					$class = $timer["class"];
 					$callback = $timer["callback"];
