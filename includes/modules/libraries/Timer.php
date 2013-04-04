@@ -16,6 +16,9 @@
 							if (get_class($mod) == get_class($class)) {
 								$class->$callback($timer["params"]);
 							}
+							else {
+								Logger::info("Kept from resurrecting potentially old (unloaded) code.  Module's class name does not match original. (".get_class($mod)." -> ".get_class($class).")");
+							}
 						}
 					}
 					
