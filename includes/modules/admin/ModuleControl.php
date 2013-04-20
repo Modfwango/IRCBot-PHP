@@ -10,7 +10,6 @@
 			$message = $data[3];
 			
 			$ex = explode(" ", $message);
-			Logger::info($message);
 			if (preg_match("/^".$connection->getNickname().". load (.+)/i", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
