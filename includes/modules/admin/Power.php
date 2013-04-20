@@ -28,11 +28,11 @@
 		function userLoginCallback($connection, $id, $nick, $loggedin) {
 			$entry = $this->queue[$id];
 			if ($loggedin == true) {
-				if ($entry[1] == "restart")) {
+				if ($entry[1] == "restart") {
 					$this->restart();
 				}
 			
-				if ($entry[1] == "stop")) {
+				if ($entry[1] == "stop") {
 					die($this->stop());
 				}
 			}

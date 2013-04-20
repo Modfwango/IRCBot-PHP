@@ -10,6 +10,7 @@
 			$message = $data[3];
 			
 			$ex = explode(" ", $message);
+			Logger::info($message);
 			if (preg_match("/^".$connection->getNickname().". load (.+)/i", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
@@ -35,7 +36,7 @@
 		function userLoginCallback($connection, $id, $nick, $loggedin) {
 			$entry = $this->queue[$id];
 			if ($loggedin == true) {
-				if ($entry[1] == "load")) {
+				if ($entry[1] == "load") {
 					if (ModuleManagement::loadModule($entry[2])) {
 						$connection->send("NOTICE ".$entry[0]." :\"".$entry[2]."\" has been loaded.");
 					}
@@ -44,7 +45,7 @@
 					}
 				}
 			
-				if ($entry[1] == "reload")) {
+				if ($entry[1] == "reload") {
 					if (ModuleManagement::reloadModule($entry[2])) {
 						$connection->send("NOTICE ".$entry[0]." :\"".$entry[2]."\" has been reloaded.");
 					}
@@ -53,7 +54,7 @@
 					}
 				}
 			
-				if ($entry[1] == "unload")) {
+				if ($entry[1] == "unload") {
 					if (ModuleManagement::unloadModule($entry[2])) {
 						$connection->send("NOTICE ".$entry[0]." :\"".$entry[2]."\" has been unloaded.");
 					}
