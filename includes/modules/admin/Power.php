@@ -10,17 +10,17 @@
 			$message = $data[3];
 			
 			$ex = explode(" ", $message);
-			if (strtolower($ex[0]) == strtolower($connection->getNickname().": restart")) {
+			if (preg_match("/^".$connection->getNickname().". restart/i", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
-					$this->queue[$module->testLogin($connection, $this, "userLoginCallback", $source[0])] = array($source[0], $ex[0]);
+					$this->queue[$module->testLogin($connection, $this, "userLoginCallback", $source[0])] = array($source[0], "restart");
 				}
 			}
 			
-			if (strtolower($ex[0]) == strtolower($connection->getNickname().": stop")) {
+			if (preg_match("/^".$connection->getNickname().". stop/i", $message, $matches)) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
-					$this->queue[$module->testLogin($connection, $this, "userLoginCallback", $source[0])] = array($source[0], $ex[0]);
+					$this->queue[$module->testLogin($connection, $this, "userLoginCallback", $source[0])] = array($source[0], "stop");
 				}
 			}
 		}
@@ -28,11 +28,11 @@
 		function userLoginCallback($connection, $id, $nick, $loggedin) {
 			$entry = $this->queue[$id];
 			if ($loggedin == true) {
-				if (strtolower($entry[1]) == strtolower($connection->getNickname().": restart")) {
+				if ($entry[1] == "restart")) {
 					$this->restart();
 				}
 			
-				if (strtolower($entry[1]) == strtolower($connection->getNickname().": restart")) {
+				if ($entry[1] == "stop")) {
 					die($this->stop());
 				}
 			}
