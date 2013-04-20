@@ -86,6 +86,10 @@
 			return $this->netname;
 		}
 		
+		public function getNickname() {
+			return $this->nickname;
+		}
+		
 		public function identify() {
 			if ($this->nspass != null) {
 				Logger::debug("Identifying to NickServ on '".$this->netname.".'");

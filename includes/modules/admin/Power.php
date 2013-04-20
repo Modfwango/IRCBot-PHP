@@ -10,14 +10,14 @@
 			$message = $data[3];
 			
 			$ex = explode(" ", $message);
-			if (strtolower($ex[0]) == "!restart") {
+			if (strtolower($ex[0]) == strtolower($connection->getNickname().": restart")) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
 					$this->queue[$module->testLogin($connection, $this, "userLoginCallback", $source[0])] = array($source[0], $ex[0]);
 				}
 			}
 			
-			if (strtolower($ex[0]) == "!stop") {
+			if (strtolower($ex[0]) == strtolower($connection->getNickname().": stop")) {
 				$module = ModuleManagement::getModuleByName("UserIdentification");
 				if (is_object($module)) {
 					$this->queue[$module->testLogin($connection, $this, "userLoginCallback", $source[0])] = array($source[0], $ex[0]);
@@ -28,11 +28,11 @@
 		function userLoginCallback($connection, $id, $nick, $loggedin) {
 			$entry = $this->queue[$id];
 			if ($loggedin == true) {
-				if (strtolower($entry[1]) == "!restart") {
+				if (strtolower($entry[1]) == strtolower($connection->getNickname().": restart")) {
 					$this->restart();
 				}
 			
-				if (strtolower($entry[1]) == "!stop") {
+				if (strtolower($entry[1]) == strtolower($connection->getNickname().": restart")) {
 					die($this->stop());
 				}
 			}
