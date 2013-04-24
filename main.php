@@ -4,7 +4,7 @@
 	ini_set("display_errors", 1);
 	
 	/* Make sure the path to the project root is alphanumeric, including the / and . characters. */
-	if (!preg_match("/^[a-zA-Z0-9\\/.]+$/", dirname(__FILE__))) {
+	if (!preg_match("/^[a-zA-Z0-9\\/.\\-]+$/", dirname(__FILE__))) {
 		die("The full path to this file must match this regular expression:\n^[a-zA-Z0-9\\/.]+$\n");
 	}
 	
