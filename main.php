@@ -17,6 +17,15 @@
 	/* Define the debug constant to allow the logger to be aware of the current logging state */
 	define("__DEBUG__", false);
 	
+	if (!function_exists("boolval")) {
+		function boolval($input) {
+			if (trim($input) == "true" || $input == true) {
+				return true;
+			}
+			return false;
+		}
+	}
+	
 	require_once(__PROJECTROOT__."/includes/connection.php");
 	require_once(__PROJECTROOT__."/includes/connectionManagement.php");
 	require_once(__PROJECTROOT__."/includes/eventHandling.php");
@@ -92,12 +101,5 @@
 				}
 			}
 		}
-	}
-	
-	function boolval($input) {
-		if (trim($input) == "true" || $input == true) {
-			return true;
-		}
-		return false;
 	}
 ?>
