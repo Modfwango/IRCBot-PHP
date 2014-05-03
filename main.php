@@ -57,7 +57,7 @@
 			}
 			
 			if (!isset($network['nspass'])) {
-				$network['channels'] = null;
+				$network['nspass'] = null;
 			}
 			
 			$network['port'] = intval($network['port']);
