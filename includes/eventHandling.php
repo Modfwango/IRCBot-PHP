@@ -60,7 +60,7 @@
     }
 
     public static function triggerEvent($name, $id, $data = null) {
-      if (isset(self::$events[$name])) {
+      if (isset(self::$events[$name][2][$id])) {
         $registration = self::$events[$name][2][$id];
         if (method_exists($registration[0], $registration[1])) {
           if ($name != "connectionLoopEnd") {
