@@ -6,7 +6,7 @@
 
       if (isset($argv[1])) {
         // Ensure that any non-default user input is converted to a boolean.
-        $debug = (bool)$debug;
+        $debug = (bool)$argv[1];
       }
       else {
         $debug = false;
