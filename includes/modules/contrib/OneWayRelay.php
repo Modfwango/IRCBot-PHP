@@ -1,5 +1,9 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("ChannelJoinEvent", "ChannelMessageEvent",
+      "ChannelModeEvent", "ChannelNoticeEvent", "ChannelPartEvent",
+      "ChannelQuitEvent", "ChannelTopicEvent", "PrivateMessageEvent",
+      "PrivateNoticeEvent", "UserIdentification", "UserModeEvent");
     public $name = "OneWayRelay";
     private $destination = array();
     private $queue = array();
