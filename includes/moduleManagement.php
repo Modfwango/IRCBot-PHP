@@ -68,7 +68,7 @@
                 self::$modules[] = $module;
                 Logger::info("Loaded module \"".$name."\"");
                 foreach (self::$waitingList as $key => $item) {
-                  if (self::checkDependencies($item)
+                  if (self::checkDependencies($item[1])
                       && $item[1]->isInstantiated()) {
                     self::$modules[] = $item[1];
                     Logger::info("Loaded module \"".$item[0]."\"");
