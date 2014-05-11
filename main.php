@@ -1,6 +1,6 @@
 <?php
   class Main {
-    public function __construct() {
+    public function __construct($argv) {
       // Verify that the bot can run in the provided environment.
       $this->verifyEnvironment();
 
@@ -11,8 +11,6 @@
       else {
         $debug = false;
       }
-
-      echo var_export($debug, true)."\n\n";
 
       // Activate full error reporting.
       $this->setErrorReporting();
@@ -172,5 +170,5 @@
     }
   }
 
-  $bot = new Main();
+  $bot = new Main($argv);
 ?>
