@@ -137,7 +137,7 @@
 
       // Define the debug constant to allow the logger determine the correct
       // output type.
-      define("__DEBUG__", false);
+      define("__DEBUG__", $debug);
 
       // Load the connection related classes.
       require_once(__PROJECTROOT__."/includes/connection.php");
