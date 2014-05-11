@@ -11,6 +11,14 @@
       return false;
     }
 
+    public static function getLoadedModules() {
+      $list = array();
+      foreach (self::$modules as $module) {
+        $list[] = $module->name;
+      }
+      return $list;
+    }
+
     public static function getModuleByName($name) {
       foreach (self::$modules as $module) {
         if (strtolower($module->name) == strtolower($name)) {

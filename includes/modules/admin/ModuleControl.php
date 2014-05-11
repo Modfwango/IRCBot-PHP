@@ -20,6 +20,15 @@
         }
       }
 
+      if (preg_match("/^".$connection->getNickname().". loaded/i",
+          $message, $matches)) {
+        $module = ModuleManagement::getModuleByName("UserIdentification");
+        if (is_object($module)) {
+          $this->queue[$module->testLogin($connection, $this,
+            "userLoginCallback", $source[0])] = array($source[0], "loaded");
+        }
+      }
+
       if (preg_match("/^".$connection->getNickname().". reload (.+)/i",
           $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
@@ -53,6 +62,12 @@
             $connection->send("NOTICE ".$entry[0]." :I was not able to load \"".
               $entry[2].".\"");
           }
+        }
+
+        if ($entry[1] == "loaded") {
+          $list = ModuleManagement::getLoadedModules();
+          $connection->send("NOTICE ".$entry[0]." :These modules are currently".
+            " loaded:  ".implode(", ", $list));
         }
 
         if ($entry[1] == "reload") {
