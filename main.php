@@ -1,117 +1,174 @@
 <?php
-  /* Show all errors. */
-  error_reporting(E_ALL);
-  ini_set("display_errors", 1);
+  class Main {
+    public function __construct($debug = false) {
+      // Verify that the bot can run in the provided environment.
+      $this->verifyEnvironment();
 
-  /* Make sure the path to the project root is alphanumeric, including the / and
-   * . characters. */
-  if (!preg_match("/^[a-zA-Z0-9\\/.\\-]+$/", dirname(__FILE__))) {
-    die("The full path to this file must match this regular expression:\n^[a-z".
-      "A-Z0-9\\/.]+$\n");
-  }
+      // Ensure that any non-default user input is converted to a boolean.
+      $debug = boolval($debug);
 
-  /* Define the root of the project folder. */
-  define("__PROJECTROOT__", dirname(__FILE__));
+      // Activate full error reporting.
+      $this->setErrorReporting();
 
-  /* Define start time to allow some fancy uptime module features and whatnot */
-  define("__STARTTIME__", time());
+      // Setup required constants for operation and load required classes.
+      $this->prepareEnvironment($debug);
 
-  /* Define the debug constant to allow the logger to be aware of the current
-   * logging state */
-  define("__DEBUG__", false);
+      // Discover networks located in conf/networks/.
+      $this->discoverNetworks();
 
-  if (!function_exists("boolval")) {
-    function boolval($input) {
-      if (trim($input) == "true" || $input == true) {
-        return true;
-      }
+      // Initiate a connection to all loaded networks.
+      $this->activateNetworks();
+
+      // Load requested modules.
+      $this->loadModules();
+
+      // Start the main loop.
+      $this->loop();
+
+      // Return a false value if the loop fails.
       return false;
     }
-  }
 
-  require_once(__PROJECTROOT__."/includes/connection.php");
-  require_once(__PROJECTROOT__."/includes/connectionManagement.php");
-  require_once(__PROJECTROOT__."/includes/eventHandling.php");
-  require_once(__PROJECTROOT__."/includes/logger.php");
-  require_once(__PROJECTROOT__."/includes/moduleManagement.php");
-  require_once(__PROJECTROOT__."/includes/storageHandling.php");
-
-
-  /* Events must be loaded first since some modules depend on them being
-   * available. */
-  foreach (explode("\n",
-      trim(file_get_contents(__PROJECTROOT__."/conf/modules.conf")))
-      as $module) {
-    $module = trim($module);
-    if (strlen($module) > 0) {
-      ModuleManagement::loadModule($module);
-    }
-  }
-
-  /* Now we estabish server connection settings from config files found in
-   * "conf/networks/" directory
-   *  ConnectionManagement::newConnection(Connection);
-   *    Add a Connection class here so that it can be managed easily.
-   *
-   *  new Connection();
-   */
-  $networks = glob(__PROJECTROOT__."/conf/networks/*");
-  foreach ($networks as $file) {
-    $network = parse_ini_file($file, true);
-
-    if (isset($network['netname']) && isset($network['address'])
-        && isset($network['port']) && isset($network['nick'])
-        && isset($network['user']) && isset($network['realname'])) {
-      if (!isset($network['ssl'])) {
-        $network['ssl'] = false;
+    private function activateNetworks() {
+      // Iterate through the list of defined connections.
+      foreach (ConnectionManagement::getConnections() as $connection) {
+        // Connect.
+        $connection->connect();
       }
-
-      if (!isset($network['pass'])) {
-        $network['pass'] = null;
-      }
-
-      if (!isset($network['channels'])) {
-        $network['channels'] = null;
-      }
-
-      if (!isset($network['nspass'])) {
-        $network['nspass'] = null;
-      }
-
-      $network['port'] = intval($network['port']);
-      $network['ssl'] = boolval($network['ssl']);
-      $network['channels'] = explode(',', $network['channels']);
-      ConnectionManagement::newConnection(new Connection($network['netname'],
-        $network['address'], $network['port'], $network['ssl'],
-        $network['pass'], $network['nick'], $network['user'],
-        $network['realname'], $network['channels'], $network['nspass']));
-    }
-    else {
-      Logger::info("Network in file \"".$file."\" failed to parse.");
-    }
-  }
-
-  /* Don't edit below this line unless you know what you're doing. */
-
-  foreach (ConnectionManagement::getConnections() as $connection) {
-    $connection->connect();
-  }
-
-  while (true) {
-    foreach (ConnectionManagement::getConnections() as $connection) {
-      $data = $connection->getData();
-      if ($data != false) {
-        EventHandling::receiveData($connection, $data);
-      }
-      usleep(10000);
     }
 
-    foreach (EventHandling::getEvents() as $key => $event) {
-      if ($key == "connectionLoopEnd") {
-        foreach ($event[2] as $id => $registration) {
-          EventHandling::triggerEvent("connectionLoopEnd", $id);
+    private function discoverNetworks() {
+      // Get a list of network configurations.
+      $networks = glob(__PROJECTROOT__."/conf/networks/*");
+
+      // Iterate through the list and load each item individually.
+      foreach ($networks as $file) {
+        // Parse the files using an ini parser.
+        $network = parse_ini_file($file, true);
+
+        // Require these items to be defined.
+        if (isset($network['netname']) && isset($network['address'])
+            && isset($network['port']) && isset($network['nick'])
+            && isset($network['user']) && isset($network['realname'])) {
+          // Define optional parameters to their default values.
+          if (!isset($network['ssl'])) {
+            $network['ssl'] = false;
+          }
+
+          if (!isset($network['pass'])) {
+            $network['pass'] = null;
+          }
+
+          if (!isset($network['channels'])) {
+            $network['channels'] = null;
+          }
+
+          if (!isset($network['nspass'])) {
+            $network['nspass'] = null;
+          }
+
+          $network['port'] = intval($network['port']);
+          $network['ssl'] = boolval($network['ssl']);
+          $network['channels'] = explode(',', $network['channels']);
+          // Add the network to the connection manager.
+          ConnectionManagement::newConnection(new Connection(
+            $network['netname'], $network['address'], $network['port'],
+            $network['ssl'], $network['pass'], $network['nick'],
+            $network['user'], $network['realname'], $network['channels'],
+            $network['nspass']));
+        }
+        else {
+          // Uh-oh!
+          Logger::info("Network in file \"".$file."\" failed to parse.");
         }
       }
     }
+
+    private function loadModules() {
+      // Load modules in requested order in conf/modules.conf.
+      foreach (explode("\n",
+          trim(file_get_contents(__PROJECTROOT__."/conf/modules.conf")))
+          as $module) {
+        $module = trim($module);
+        if (strlen($module) > 0) {
+          ModuleManagement::loadModule($module);
+        }
+      }
+    }
+
+    private function loop() {
+      // Infinitely loop.
+      while (true) {
+        // Iterate through each connection.
+        foreach (ConnectionManagement::getConnections() as $connection) {
+          // Fetch any received data.
+          $data = $connection->getData();
+          if ($data != false) {
+            // Pass the connection and associated data to the event handler.
+            EventHandling::receiveData($connection, $data);
+          }
+          // Sleep for a small amount of time to prevent high CPU usage.
+          usleep(10000);
+        }
+
+        // Iterate through each event to find the connectionLoopEnd event.
+        foreach (EventHandling::getEvents() as $key => $event) {
+          if ($key == "connectionLoopEnd") {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionLoopEnd event for each registered module.
+              EventHandling::triggerEvent("connectionLoopEnd", $id);
+            }
+          }
+        }
+      }
+    }
+
+    private function prepareEnvironment($debug) {
+      // Define the root of the project folder.
+      define("__PROJECTROOT__", dirname(__FILE__));
+
+      // Define start timestamp.
+      define("__STARTTIME__", time());
+
+      // Define the debug constant to allow the logger determine the correct
+      // output type.
+      define("__DEBUG__", false);
+
+      // Load the connection related classes.
+      require_once(__PROJECTROOT__."/includes/connection.php");
+      require_once(__PROJECTROOT__."/includes/connectionManagement.php");
+
+      // Load the event handler.
+      require_once(__PROJECTROOT__."/includes/eventHandling.php");
+
+      // Load the logger.
+      require_once(__PROJECTROOT__."/includes/logger.php");
+
+      // Load the module management class.
+      require_once(__PROJECTROOT__."/includes/moduleManagement.php");
+
+      // Load the storage handling class.
+      require_once(__PROJECTROOT__."/includes/storageHandling.php");
+    }
+
+    private function setErrorReporting() {
+      error_reporting(E_ALL);
+      ini_set("display_errors", 1);
+    }
+
+    private function verifyEnvironment() {
+      // Verify that the current directory structure is named safely.
+      if (!preg_match("/^[a-zA-Z0-9\\/.\\-]+$/", dirname(__FILE__))) {
+        die("The full path to this file must match this regular expression:\n^".
+          "[a-zA-Z0-9\\/.\\-]+$\n");
+      }
+
+      // Enforce PHP version >= 5.5.0.
+      if (!function_exists("boolval")) {
+        die("This bot requires a PHP version >= 5.5.0.");
+      }
+    }
   }
+
+  $bot = new Main($argv[1]);
 ?>
