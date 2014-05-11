@@ -73,7 +73,7 @@
           }
 
           $network['port'] = intval($network['port']);
-          $network['ssl'] = boolval($network['ssl']);
+          $network['ssl'] = (bool)$network['ssl'];
           $network['channels'] = explode(',', $network['channels']);
           // Add the network to the connection manager.
           ConnectionManagement::newConnection(new Connection(
