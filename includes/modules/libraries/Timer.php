@@ -6,7 +6,7 @@
     public function connectionLoopEnd() {
       foreach ($this->timers as $id => $timer) {
         if ($timer != null && $timer["runtime"] <= microtime(true)) {
-          Logger::debug("Processing timer for '".$timer["class"]->name."->"
+          Logger::debug("Processing timer for '".$timer["class"]->name."->".
             $timer["callback"]."()'");
           $class = $timer["class"];
           $callback = $timer["callback"];
