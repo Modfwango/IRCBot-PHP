@@ -24,7 +24,7 @@
     }
 
     public static function delConnectionByNetworkName($name) {
-      foreach (self::$connections as $key -> $connection) {
+      foreach (self::$connections as $key => $connection) {
         if (strtolower(trim($name))
             == strtolower(trim($connection->getNetworkName()))) {
           $connection->disconnect();
