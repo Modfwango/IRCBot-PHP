@@ -1,11 +1,16 @@
 <?php
   class Main {
-    public function __construct($debug = false) {
+    public function __construct() {
       // Verify that the bot can run in the provided environment.
       $this->verifyEnvironment();
 
-      // Ensure that any non-default user input is converted to a boolean.
-      $debug = boolval($debug);
+      if (isset($argv[1])) {
+        // Ensure that any non-default user input is converted to a boolean.
+        $debug = boolval($debug);
+      }
+      else {
+        $debug = false;
+      }
 
       // Activate full error reporting.
       $this->setErrorReporting();
@@ -170,5 +175,5 @@
     }
   }
 
-  $bot = new Main($argv[1]);
+  $bot = new Main();
 ?>
