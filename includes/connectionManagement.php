@@ -29,6 +29,8 @@
             == strtolower(trim($connection->getNetworkName()))) {
           $connection->disconnect();
           unset(self::$connections[$key]);
+          Logger::info("Network '".$connection->getNetworkName().
+            "' added to the connection manager.");
           return true;
         }
       }
