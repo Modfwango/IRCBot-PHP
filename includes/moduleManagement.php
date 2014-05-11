@@ -123,9 +123,13 @@
           if (strtolower($module->name) == strtolower(basename($name))) {
             foreach (self::$modules as $m) {
               if (isset($m->depend) && is_array($m->depend)
-                  && count($m->depend) > 0
-                  && in_array(strtolower(basename($name)), $m->depend)) {
-                self::unloadModule($m->name);
+                  && count($m->depend) > 0) {
+                foreach ($m->depend as $d) {
+                  if (strtolower($d) == strtolower(basename($name))) {
+                    self::unloadModule($m->name);
+                    break;
+                  }
+                }
               }
             }
             EventHandling::unregisterModule($module);
