@@ -67,11 +67,12 @@
               if ($module->isInstantiated()) {
                 self::$modules[] = $module;
                 Logger::info("Loaded module \"".$name."\"");
-                foreach (self::$waitingList as $item) {
+                foreach (self::$waitingList as $key => $item) {
                   if (self::checkDependencies($item)
                       && $item[1]->isInstantiated()) {
                     self::$modules[] = $item[1];
                     Logger::info("Loaded module \"".$item[0]."\"");
+                    unset(self::$waitingList[$key]);
                   }
                 }
                 return true;
