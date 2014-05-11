@@ -10,7 +10,12 @@
         if (stristr($ex[0], "@")) {
           $nick = explode("!", substr($ex[0], 1));
           $user = explode("@", $nick[1]);
-          $nick = substr($nick[0], 1);
+          if (substr($nick[0], 0, 1) == ':') {
+            $nick = substr($nick[0], 1);
+          }
+          else {
+            $nick = $nick[0];
+          }
           $host = $user[1];
           $user = $user[0];
           $source = array($nick, $user, $host);
