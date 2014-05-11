@@ -12,6 +12,8 @@
         $debug = false;
       }
 
+      echo var_export($debug, true)."\n\n";
+
       // Activate full error reporting.
       $this->setErrorReporting();
 
@@ -137,7 +139,7 @@
 
       // Define the debug constant to allow the logger determine the correct
       // output type.
-      define("__DEBUG__", true);
+      define("__DEBUG__", $debug);
 
       // Load the connection related classes.
       require_once(__PROJECTROOT__."/includes/connection.php");
