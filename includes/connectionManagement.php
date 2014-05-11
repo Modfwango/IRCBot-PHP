@@ -30,7 +30,7 @@
           $connection->disconnect();
           unset(self::$connections[$key]);
           Logger::info("Network '".$connection->getNetworkName().
-            "' added to the connection manager.");
+            "' removed from the connection manager.");
           return true;
         }
       }
