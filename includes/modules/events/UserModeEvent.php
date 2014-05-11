@@ -22,7 +22,7 @@
         }
         else {
           $nick = substr($ex[0], 1);
-          $source = array($nick);
+          $source = array($nick, null, null);
         }
         $target = $ex[2];
 
