@@ -1,5 +1,9 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("ChannelJoinEvent", "ChannelMessageEvent",
+      "ChannelModeEvent", "ChannelNoticeEvent", "ChannelPartEvent",
+      "ChannelQuitEvent", "ChannelTopicEvent", "PrivateMessageEvent",
+      "PrivateNoticeEvent", "UserModeEvent");
     public $name = "CleanLogs";
 
     public function receiveChannelJoin($name, $data) {

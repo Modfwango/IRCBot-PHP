@@ -1,5 +1,6 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("RawEvent");
     public $name = "PingPong";
 
     public function respondToPing($name, $data) {

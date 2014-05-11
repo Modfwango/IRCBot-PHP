@@ -1,5 +1,6 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("ChannelMessageEvent");
     public $name = "Uptime";
 
     public function receiveChannelMessage($name, $data) {

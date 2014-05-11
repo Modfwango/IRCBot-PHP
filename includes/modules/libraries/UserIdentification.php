@@ -1,5 +1,6 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("NumericEvent");
     public $name = "UserIdentification";
     private $authorizedUsers = array();
     private $listening = false;

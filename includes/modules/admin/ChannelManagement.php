@@ -1,5 +1,7 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("ChannelMessageEvent", "NumericEvent",
+      "UserIdentification");
     public $name = "ChannelManagement";
     private $queue = array();
 

@@ -1,5 +1,6 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("ChannelMessageEvent");
     public $name = "MemoryUsage";
 
     public function receiveChannelMessage($name, $data) {

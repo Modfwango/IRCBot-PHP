@@ -1,5 +1,6 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("NumericEvent");
     public $name = "ChannelAccess";
     private $listening = false;
     private $queue = array();
