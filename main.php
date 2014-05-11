@@ -6,7 +6,7 @@
 
       if (isset($argv[1])) {
         // Ensure that any non-default user input is converted to a boolean.
-        $debug = boolval($debug);
+        $debug = (bool)$debug;
       }
       else {
         $debug = false;
@@ -166,11 +166,6 @@
       if (!preg_match("/^[a-zA-Z0-9\\/.\\-]+$/", dirname(__FILE__))) {
         die("The full path to this file must match this regular expression:\n^".
           "[a-zA-Z0-9\\/.\\-]+$\n");
-      }
-
-      // Enforce PHP version >= 5.5.0.
-      if (!function_exists("boolval")) {
-        die("This bot requires a PHP version >= 5.5.0.");
       }
     }
   }
