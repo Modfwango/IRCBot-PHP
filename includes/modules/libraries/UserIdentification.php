@@ -21,6 +21,7 @@
               if (strtolower($message[0])
                   == strtolower($this->queue[$this->listening][3])
                   && $message[1] == $nsaccount) {
+                Logger::debug($message[0]." is an authorized user.");
                 $this->queue[$this->listening][4] = true;
                 $module = $this->queue[$this->listening][1];
                 $callback = $this->queue[$this->listening][2];
@@ -35,6 +36,7 @@
           if (strtolower($message[0])
               == strtolower($this->queue[$this->listening][3])
               && !isset($this->queue[$this->listening][4])) {
+            Logger::debug($message[0]." is not an authorized user.");
             $module = $this->queue[$this->listening][1];
             $callback = $this->queue[$this->listening][2];
             $module->$callback($this->queue[$this->listening][0],
