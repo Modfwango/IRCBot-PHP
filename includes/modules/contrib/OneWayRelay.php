@@ -77,7 +77,7 @@
       $netname = $detail[0];
       $address = $detail[1];
       $port = $detail[2];
-      $ssl = boolval($detail[3]);
+      $ssl = (bool)$detail[3];
       $serverpass = ($detail[4] != "null" ? $detail[4] : null);
       $nick = $detail[5];
       $ident = $detail[6];
