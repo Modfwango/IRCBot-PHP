@@ -15,6 +15,9 @@
         $this->ssl = $ssl;
         $this->options = $options;
 
+        Logger::debug(str_ireplace("\n", " ", var_export($this->options,
+          true)));
+
         Logger::info("Connection to '".($this->ssl ? "tls://" : null).
           $this->host.":".$this->port."' created.");
 
