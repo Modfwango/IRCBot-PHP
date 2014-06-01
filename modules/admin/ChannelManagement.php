@@ -81,7 +81,7 @@
       if ($loggedin == true) {
         if ($entry[2][0] == "JOIN") {
           if (isset($entry[2][2]) && $entry[2][2] == true) {
-            $this->autojoinAdd($connection->getNetworkName(), $entry[2][1]);
+            $this->autojoinAdd($connection->getOption('netname'), $entry[2][1]);
           }
           $connection->send("JOIN ".implode(",", $entry[2][1]));
           $connection->send("NOTICE ".$entry[0][0].
@@ -90,7 +90,7 @@
         }
         elseif ($entry[2][0] == "PART") {
           if (isset($entry[2][2]) && $entry[2][2] == true) {
-            $this->autojoinRemove($connection->getNetworkName(), $entry[2][1]);
+            $this->autojoinRemove($connection->getOption('netname'), $entry[2][1]);
           }
           $connection->send("PART ".implode(",", $entry[2][1]));
           $connection->send("NOTICE ".$entry[0][0].
@@ -157,21 +157,21 @@
       $message = $data[4];
 
       $channels = StorageHandling::loadFile($this,
-        $connection->getNetworkName()."-autojoin.txt");
+        $connection->getOption('netname')."-autojoin.txt");
       if ($channels != false && is_string($channels) && strlen($channels) > 0) {
         $channels = unserialize($channels);
         if (is_array($channels)) {
           Logger::info("Loaded autojoin database for \"".
-            $connection->getNetworkName()."\"");
+            $connection->getOption('netname')."\"");
           foreach ($channels as $channel) {
             Logger::info("Autojoining \"".$channel."\" on \"".
-              $connection->getNetworkName()."\"");
+              $connection->getOption('netname')."\"");
             $connection->send("JOIN ".$channel);
           }
         }
       }
       else {
-        StorageHandling::saveFile($this, $connection->getNetworkName().
+        StorageHandling::saveFile($this, $connection->getOption('netname').
           "-autojoin.txt", serialize(array()));
       }
     }

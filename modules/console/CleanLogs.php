@@ -15,7 +15,7 @@
         $target = substr($target, 1);
       }
 
-      Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".
+      Logger::info("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]."(".$source[1]."@".$source[2].") Join");
     }
 
@@ -27,11 +27,11 @@
 
       if (preg_match("/ACTION (.*)/", $message, $matches)) {
         $message = $matches[1];
-        Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".
+        Logger::info("[".$connection->getOption('netname')." / ".$target."] * ".
           $source[0]." ".$message);
       }
       else {
-        Logger::info("[".$connection->getNetworkName()." / ".$target."] <".
+        Logger::info("[".$connection->getOption('netname')." / ".$target."] <".
           $source[0]."> ".$message);
       }
     }
@@ -42,7 +42,7 @@
       $target = $data[2];
       $modestring = $data[3];
 
-      Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".
+      Logger::info("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]."(".$source[1]."@".$source[2].") set mode: ".$modestring);
     }
 
@@ -52,7 +52,7 @@
       $target = $data[2];
       $message = $data[3];
 
-      Logger::info("[".$connection->getNetworkName()." / ".$target."] -".
+      Logger::info("[".$connection->getOption('netname')." / ".$target."] -".
         $source[0]."- ".$message);
     }
 
@@ -66,7 +66,7 @@
         $message = " (".$message.")";
       }
 
-      Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".
+      Logger::info("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]."(".$source[1]."@".$source[2].") Part".$message);
     }
 
@@ -79,7 +79,7 @@
         $message = " (".$message.")";
       }
 
-      Logger::info("[".$connection->getNetworkName()."] * ".$source[0]."(".
+      Logger::info("[".$connection->getOption('netname')."] * ".$source[0]."(".
         $source[1]."@".$source[2].") Quit".$message);
     }
 
@@ -89,7 +89,7 @@
       $target = $data[2];
       $topic = $data[3];
 
-      Logger::info("[".$connection->getNetworkName()."] * ".$source[0]."(".
+      Logger::info("[".$connection->getOption('netname')."] * ".$source[0]."(".
         $source[1]."@".$source[2].") changed the topic to: '".$topic."'");
     }
 
@@ -101,11 +101,11 @@
 
       if (preg_match("/ACTION (.*)/", $message, $matches)) {
         $message = $matches[1];
-        Logger::info("[".$connection->getNetworkName()." / PM] * ".$source[0].
+        Logger::info("[".$connection->getOption('netname')." / PM] * ".$source[0].
           " ".$message);
       }
       else {
-        Logger::info("[".$connection->getNetworkName()." / PM] <".$source[0].
+        Logger::info("[".$connection->getOption('netname')." / PM] <".$source[0].
           "> ".$message);
       }
     }
@@ -116,7 +116,7 @@
       $target = $data[2];
       $message = $data[3];
 
-      Logger::info("[".$connection->getNetworkName()." / PM] -".$source[0]."- ".
+      Logger::info("[".$connection->getOption('netname')." / PM] -".$source[0]."- ".
         $message);
     }
 
@@ -126,7 +126,7 @@
       $target = $data[2];
       $modestring = $data[3];
 
-      Logger::info("[".$connection->getNetworkName()." / ".$target."] * ".
+      Logger::info("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]." set mode: ".$modestring);
     }
 

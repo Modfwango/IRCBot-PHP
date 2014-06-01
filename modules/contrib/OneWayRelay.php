@@ -213,7 +213,7 @@
       $source = $data[1];
       $target = $data[2];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
@@ -222,7 +222,7 @@
         $target = substr($target, 1);
       }
 
-      $this->deliver("[".$connection->getNetworkName()." / ".$target."] * ".
+      $this->deliver("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]."(".$source[1]."@".$source[2].") Join");
     }
 
@@ -232,18 +232,18 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
 
       if (preg_match("/ACTION (.*)/", $message, $matches)) {
         $message = $matches[1];
-        $this->deliver("[".$connection->getNetworkName()." / ".$target."] * ".
+        $this->deliver("[".$connection->getOption('netname')." / ".$target."] * ".
           $source[0]." ".$message);
       }
       else {
-        $this->deliver("[".$connection->getNetworkName()." / ".$target."] <".
+        $this->deliver("[".$connection->getOption('netname')." / ".$target."] <".
           $source[0]."> ".$message);
       }
     }
@@ -254,12 +254,12 @@
       $target = $data[2];
       $modestring = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
 
-      $this->deliver("[".$connection->getNetworkName()." / ".$target."] * ".
+      $this->deliver("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]."(".$source[1]."@".$source[2].") set mode: ".$modestring);
     }
 
@@ -269,12 +269,12 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
 
-      $this->deliver("[".$connection->getNetworkName()." / ".$target."] -".
+      $this->deliver("[".$connection->getOption('netname')." / ".$target."] -".
         $source[0]."- ".$message);
     }
 
@@ -284,7 +284,7 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
@@ -293,7 +293,7 @@
         $message = " (".$message.")";
       }
 
-      $this->deliver("[".$connection->getNetworkName()." / ".$target."] * ".
+      $this->deliver("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]."(".$source[1]."@".$source[2].") Part".$message);
     }
 
@@ -302,7 +302,7 @@
       $source = $data[1];
       $message = $data[2];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $source[0])) {
         return false;
       }
@@ -311,7 +311,7 @@
         $message = " (".$message.")";
       }
 
-      $this->deliver("[".$connection->getNetworkName()."] * ".$source[0]."(".
+      $this->deliver("[".$connection->getOption('netname')."] * ".$source[0]."(".
         $source[1]."@".$source[2].") Quit".$message);
     }
 
@@ -321,12 +321,12 @@
       $target = $data[2];
       $topic = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
 
-      $this->deliver("[".$connection->getNetworkName()."] * ".$source[0]."(".
+      $this->deliver("[".$connection->getOption('netname')."] * ".$source[0]."(".
         $source[1]."@".$source[2].") changed the topic to: '".$topic."'");
     }
 
@@ -380,15 +380,15 @@
             "setRelayDestination", explode(" ", $matches[2]));
         }
       }
-      elseif ($this->channelMatchesFilter($connection->getNetworkName(),
+      elseif ($this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         if (preg_match("/ACTION (.*)/", $message, $matches)) {
           $message = $matches[1];
-          $this->deliver("[".$connection->getNetworkName()." / PM] * ".
+          $this->deliver("[".$connection->getOption('netname')." / PM] * ".
             $source[0]." ".$message);
         }
         else {
-          $this->deliver("[".$connection->getNetworkName()." / PM] <".
+          $this->deliver("[".$connection->getOption('netname')." / PM] <".
             $source[0]."> ".$message);
         }
       }
@@ -400,12 +400,12 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
 
-      $this->deliver("[".$connection->getNetworkName()." / PM] -".$source[0].
+      $this->deliver("[".$connection->getOption('netname')." / PM] -".$source[0].
         "- ".$message);
     }
 
@@ -415,12 +415,12 @@
       $target = $data[2];
       $modestring = $data[3];
 
-      if (!$this->channelMatchesFilter($connection->getNetworkName(),
+      if (!$this->channelMatchesFilter($connection->getOption('netname'),
           $target)) {
         return false;
       }
 
-      $this->deliver("[".$connection->getNetworkName()." / ".$target."] * ".
+      $this->deliver("[".$connection->getOption('netname')." / ".$target."] * ".
         $source[0]." set mode: ".$modestring);
     }
 
