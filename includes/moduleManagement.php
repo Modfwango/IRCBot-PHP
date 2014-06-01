@@ -54,10 +54,10 @@
       }
 
       if (!self::isLoaded(basename($name))
-          && is_readable(__PROJECTROOT__."/includes/modules/".$name.".php")) {
+          && is_readable(__PROJECTROOT__."/modules/".$name.".php")) {
         $classname = basename($name).time().mt_rand();
         $eval = str_ireplace("@@CLASSNAME@@", $classname,
-          substr(trim(file_get_contents(__PROJECTROOT__."/includes/modules/".
+          substr(trim(file_get_contents(__PROJECTROOT__."/modules/".
           $name.".php")), 5, -2));
         eval($eval);
         if (class_exists($classname)) {
