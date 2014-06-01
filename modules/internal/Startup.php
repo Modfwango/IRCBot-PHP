@@ -41,7 +41,7 @@
         $connection->send("PASS ".$connection->getOption('serverpass'));
       }
       Logger::debug("Setting nickname '".$connection->getOption('nickname').
-        "' on '".connection->getOption('netname').".'");
+        "' on '".$connection->getOption('netname').".'");
       $connection->send("NICK ".$connection->getOption('nickname'));
       Logger::debug("Setting username '".$connection->getOption('ident').
         "' and realname '".$connection->getOption('realname')."' on '".
