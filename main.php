@@ -18,14 +18,14 @@
       // Setup required constants for operation and load required classes.
       $this->prepareEnvironment($debug);
 
+      // Load requested modules.
+      $this->loadModules();
+
       // Discover connections located in conf/connections/.
       $this->discoverConnections();
 
       // Initiate all loaded connections.
       $this->activateConnections();
-
-      // Load requested modules.
-      $this->loadModules();
 
       // Start the main loop.
       $this->loop();
