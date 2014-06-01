@@ -1,5 +1,6 @@
 <?php
   class @@CLASSNAME@@ {
+    public $depend = array("ConnectionLoopEndEvent");
     public $name = "Timer";
     private $timers = array();
 
