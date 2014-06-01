@@ -152,7 +152,6 @@
         $netname = $connection->getOption("netname");
         if (is_string($netname) && strtolower(trim($netname))
             == strtolower(trim($name))) {
-          $connection->disconnect();
           ConnectionManagement::delConnectionByHost($connection->getHost());
           return true;
         }
