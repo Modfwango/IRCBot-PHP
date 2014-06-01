@@ -11,7 +11,7 @@
       $message = $data[3];
 
       $ex = explode(" ", $message);
-      if (preg_match("/^".$connection->getNickname().". restart/i", $message,
+      if (preg_match("/^".$connection->getOption('nick').". restart/i", $message,
           $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
@@ -20,7 +20,7 @@
         }
       }
 
-      if (preg_match("/^".$connection->getNickname().". stop/i", $message,
+      if (preg_match("/^".$connection->getOption('nick').". stop/i", $message,
           $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {

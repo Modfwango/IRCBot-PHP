@@ -11,7 +11,7 @@
       $message = $data[3];
 
       $ex = explode(" ", $message);
-      if (preg_match("/^".$connection->getNickname().". eval (.+)/i", $message,
+      if (preg_match("/^".$connection->getOption('nick').". eval (.+)/i", $message,
           $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {

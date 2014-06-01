@@ -9,7 +9,7 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (preg_match("/^".$connection->getNickname().". memusage/i",
+      if (preg_match("/^".$connection->getOption('nick').". memusage/i",
           $message)) {
         $connection->send("PRIVMSG ".$target." :".$this->prepareNumber(
           intval(memory_get_usage() / 1024 / 1024))." MB (".
