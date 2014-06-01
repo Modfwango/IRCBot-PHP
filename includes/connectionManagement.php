@@ -47,7 +47,7 @@
       return false;
     }
 
-    public static funciton getConnectionIndexByHost($host) {
+    public static function getConnectionIndexByHost($host) {
       foreach (self::$connections as $key => $connection) {
         if (strtolower(trim($connection->getHost()))
             == strtolower(trim($host))) {
