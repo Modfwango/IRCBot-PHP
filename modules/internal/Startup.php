@@ -1,6 +1,7 @@
 <?php
   class @@CLASSNAME@@ {
-    public $depend = array("NumericEvent");
+    public $depend = array("ConnectionConnectedEvent", "ConnectionCreatedEvent",
+      "NumericEvent");
     public $name = "Startup";
 
     public function receiveNumericEvent($name, $data) {
