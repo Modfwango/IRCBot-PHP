@@ -91,15 +91,15 @@
     }
 
     public function getData() {
-      $data = trim(fgets($this->socket, 4096));
-      if ($data != false && strlen($data) > 0) {
-        Logger::debug("Data received on '".$this->getConnectionString()."':  '".
-          $data."'");
-        return $data;
+      if (is_resource($this->socket)) {
+        $data = trim(fgets($this->socket, 4096));
+        if ($data != false && strlen($data) > 0) {
+          Logger::debug("Data received on '".$this->getConnectionString()."':  '".
+            $data."'");
+          return $data;
+        }
       }
-      else {
-        return false;
-      }
+      return false;
     }
 
     public function getHost() {
