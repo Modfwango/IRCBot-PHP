@@ -70,7 +70,7 @@
           // Add the network to the connection manager.
           ConnectionManagement::newConnection(new Connection(
             $connection['address'], $connection['port'], $connection['ssl'],
-            $connection['options']);
+            $connection['options']));
         }
         else {
           // Uh-oh!
