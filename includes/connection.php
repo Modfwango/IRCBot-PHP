@@ -28,15 +28,12 @@
     }
 
     public function connect() {
-      if ($this->configured == true) {
-        Logger::debug("Attempting connection to '".
-          $this->getConnectionString()."'");
-        $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
-          $this->port);
-        stream_set_blocking($this->socket, 0);
-        return true;
-      }
-      return false;
+      Logger::debug("Attempting connection to '".
+        $this->getConnectionString()."'");
+      $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
+        $this->port);
+      stream_set_blocking($this->socket, 0);
+      return true;
     }
 
     public function disconnect() {
