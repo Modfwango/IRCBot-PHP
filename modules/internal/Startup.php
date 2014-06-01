@@ -18,7 +18,7 @@
 
           #atheme
           $connection->send("PRIVMSG NickServ :identify ".
-            $connection->getOption('nickname')." ".
+            $connection->getOption('nick')." ".
             $connection->getOption('nspass'));
 
           #anope
@@ -26,7 +26,7 @@
             $connection->getOption('nspass'));
         }
         Logger::debug("Decloaking on '".$connection->getOption('netname').".'");
-        $connection->send("MODE ".$connection->getOption('nickname')." -x");
+        $connection->send("MODE ".$connection->getOption('nick')." -x");
       }
       else {
         Logger::debug("Joining channels on '".$connection->getOption('netname').
@@ -36,18 +36,18 @@
     }
 
     public function connectionConnectedEvent($name, $connection) {
-      if ($connection->getOption('serverpass') != null) {
+      if ($connection->getOption('pass') != null) {
         Logger::debug("Sending server password to '".
           $connection->getOption('netname').".'");
-        $connection->send("PASS ".$connection->getOption('serverpass'));
+        $connection->send("PASS ".$connection->getOption('pass'));
       }
-      Logger::debug("Setting nickname '".$connection->getOption('nickname').
+      Logger::debug("Setting nickname '".$connection->getOption('nick').
         "' on '".$connection->getOption('netname').".'");
-      $connection->send("NICK ".$connection->getOption('nickname'));
-      Logger::debug("Setting username '".$connection->getOption('ident').
+      $connection->send("NICK ".$connection->getOption('nick'));
+      Logger::debug("Setting username '".$connection->getOption('user').
         "' and realname '".$connection->getOption('realname')."' on '".
         $connection->getOption('netname').".'");
-      $connection->send("USER ".$connection->getOption('ident')." * * :".
+      $connection->send("USER ".$connection->getOption('user')." * * :".
         $connection->getOption('realname'));
     }
 
