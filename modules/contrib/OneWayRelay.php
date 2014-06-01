@@ -264,12 +264,12 @@
 
       if (preg_match("/ACTION (.*)/", $message, $matches)) {
         $message = $matches[1];
-        $this->deliver("[".$connection->getOption('netname')." / ".$target."] * ".
-          $source[0]." ".$message);
+        $this->deliver("[".$connection->getOption('netname')." / ".$target.
+          "] * ".$source[0]." ".$message);
       }
       else {
-        $this->deliver("[".$connection->getOption('netname')." / ".$target."] <".
-          $source[0]."> ".$message);
+        $this->deliver("[".$connection->getOption('netname')." / ".$target.
+          "] <".$source[0]."> ".$message);
       }
     }
 
@@ -336,8 +336,8 @@
         $message = " (".$message.")";
       }
 
-      $this->deliver("[".$connection->getOption('netname')."] * ".$source[0]."(".
-        $source[1]."@".$source[2].") Quit".$message);
+      $this->deliver("[".$connection->getOption('netname')."] * ".$source[0].
+        "(".$source[1]."@".$source[2].") Quit".$message);
     }
 
     public function receiveChannelTopic($name, $data) {
@@ -351,8 +351,8 @@
         return false;
       }
 
-      $this->deliver("[".$connection->getOption('netname')."] * ".$source[0]."(".
-        $source[1]."@".$source[2].") changed the topic to: '".$topic."'");
+      $this->deliver("[".$connection->getOption('netname')."] * ".$source[0].
+        "(".$source[1]."@".$source[2].") changed the topic to: '".$topic."'");
     }
 
     public function receivePrivateMessage($name, $data) {
@@ -430,8 +430,8 @@
         return false;
       }
 
-      $this->deliver("[".$connection->getOption('netname')." / PM] -".$source[0].
-        "- ".$message);
+      $this->deliver("[".$connection->getOption('netname')." / PM] -".
+        $source[0]."- ".$message);
     }
 
     public function receiveUserMode($name, $data) {

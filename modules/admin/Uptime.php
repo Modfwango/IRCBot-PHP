@@ -9,7 +9,8 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (preg_match("/^".$connection->getOption('nick').". uptime/i", $message)) {
+      if (preg_match("/^".$connection->getOption('nick').". uptime/i",
+          $message)) {
         $connection->send("PRIVMSG ".$target." :Uptime:  ".
           $this->getNiceDuration(time() - __STARTTIME__));
       }

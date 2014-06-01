@@ -11,8 +11,8 @@
       $target = $data[2];
       $message = $data[3];
 
-      if (preg_match("/^".$connection->getOption('nick').". join (.+)/i", $message,
-          $matches)) {
+      if (preg_match("/^".$connection->getOption('nick').". join (.+)/i",
+          $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
           if (stristr($matches[1], ",")) {
@@ -27,8 +27,8 @@
         }
       }
 
-      if (preg_match("/^".$connection->getOption('nick').". part (.+)/i", $message,
-          $matches)) {
+      if (preg_match("/^".$connection->getOption('nick').". part (.+)/i",
+          $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
           if (stristr($matches[1], ",")) {
@@ -90,7 +90,8 @@
         }
         elseif ($entry[2][0] == "PART") {
           if (isset($entry[2][2]) && $entry[2][2] == true) {
-            $this->autojoinRemove($connection->getOption('netname'), $entry[2][1]);
+            $this->autojoinRemove($connection->getOption('netname'),
+              $entry[2][1]);
           }
           $connection->send("PART ".implode(",", $entry[2][1]));
           $connection->send("NOTICE ".$entry[0][0].

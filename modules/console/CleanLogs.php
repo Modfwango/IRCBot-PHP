@@ -101,12 +101,12 @@
 
       if (preg_match("/ACTION (.*)/", $message, $matches)) {
         $message = $matches[1];
-        Logger::info("[".$connection->getOption('netname')." / PM] * ".$source[0].
-          " ".$message);
+        Logger::info("[".$connection->getOption('netname')." / PM] * ".
+          $source[0]." ".$message);
       }
       else {
-        Logger::info("[".$connection->getOption('netname')." / PM] <".$source[0].
-          "> ".$message);
+        Logger::info("[".$connection->getOption('netname')." / PM] <".
+          $source[0]."> ".$message);
       }
     }
 
@@ -116,8 +116,8 @@
       $target = $data[2];
       $message = $data[3];
 
-      Logger::info("[".$connection->getOption('netname')." / PM] -".$source[0]."- ".
-        $message);
+      Logger::info("[".$connection->getOption('netname')." / PM] -".
+        $source[0]."- ".$message);
     }
 
     public function receiveUserMode($name, $data) {
