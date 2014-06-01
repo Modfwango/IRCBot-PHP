@@ -52,6 +52,11 @@
     }
 
     public function connectionCreatedEvent($name, $connection) {
+      Logger::debug($connection->getOption('netname'));
+      Logger::debug($connection->getOption('nick'));
+      Logger::debug($connection->getOption('user'));
+      Logger::debug($connection->getOption('realname'));
+
       if (!is_string($connection->getOption('netname'))
           || !is_string($connection->getOption('nick'))
           || !is_string($connection->getOption('user'))
