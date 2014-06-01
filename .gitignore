@@ -1,5 +1,4 @@
 .DS_Store
 data
-conf/modules.conf
 conf/connections/*
-conf/connections/Example.conf
+!conf/connections/Example.conf
