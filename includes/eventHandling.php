@@ -67,9 +67,8 @@
             Logger::debug("Event '".$name."' has been triggered for '".
               $registration[0]->name."'");
           }
-          $registration[0]->$registration[1]($name, $data);
+          return $registration[0]->$registration[1]($name, $data);
         }
-        return true;
       }
       return false;
     }

@@ -18,7 +18,20 @@
         Logger::info("Connection to '".($this->ssl ? "tls://" : null).
           $this->host.":".$this->port."' created.");
 
-        $this->configured = true;
+        // Iterate through each event to find the connectionCreatedEvent
+        // event.
+        foreach (EventHandling::getEvents() as $key => $event) {
+          if ($key == "connectionCreatedEvent") {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionCreatedEvent event for each registered
+              // module.
+              if (EventHandling::triggerEvent("connectionCreatedEvent", $id,
+                  $this)) {
+                $this->configured = true;
+              }
+            }
+          }
+        }
       }
       return $this->configured;
     }
@@ -42,7 +55,8 @@
             foreach ($event[2] as $id => $registration) {
               // Trigger the connectionConnectedEvent event for each registered
               // module.
-              EventHandling::triggerEvent("connectionConnectedEvent", $id);
+              EventHandling::triggerEvent("connectionConnectedEvent", $id,
+                $this);
             }
           }
         }
@@ -61,7 +75,8 @@
           foreach ($event[2] as $id => $registration) {
             // Trigger the connectionDisconnectedEvent event for each registered
             // module.
-            EventHandling::triggerEvent("connectionDisconnectedEvent", $id);
+            EventHandling::triggerEvent("connectionDisconnectedEvent", $id,
+              $this);
           }
         }
       }
@@ -103,6 +118,11 @@
     public function send($data) {
       Logger::debug("Sending data to '".$this->host."':  '".$data."'");
       fputs($this->socket, trim($data)."\n");
+    }
+
+    public function setOption($key, $value) {
+      $this->options[$key] = $value;
+      return true;
     }
   }
 ?>
