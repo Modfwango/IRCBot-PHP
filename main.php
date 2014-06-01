@@ -18,11 +18,11 @@
       // Setup required constants for operation and load required classes.
       $this->prepareEnvironment($debug);
 
-      // Discover networks located in conf/networks/.
-      $this->discoverNetworks();
+      // Discover connections located in conf/connections/.
+      $this->discoverConnections();
 
-      // Initiate a connection to all loaded networks.
-      $this->activateNetworks();
+      // Initiate all loaded connections.
+      $this->activateConnections();
 
       // Load requested modules.
       $this->loadModules();
@@ -34,7 +34,7 @@
       return false;
     }
 
-    private function activateNetworks() {
+    private function activateConnections() {
       // Iterate through the list of defined connections.
       foreach (ConnectionManagement::getConnections() as $connection) {
         // Connect.
@@ -42,49 +42,39 @@
       }
     }
 
-    private function discoverNetworks() {
-      // Get a list of network configurations.
-      $networks = glob(__PROJECTROOT__."/conf/networks/*");
+    private function discoverConnections() {
+      // Get a list of connection configurations.
+      $connections = glob(__PROJECTROOT__."/conf/connections/*");
 
       // Iterate through the list and load each item individually.
-      foreach ($networks as $file) {
+      foreach ($connections as $file) {
         // Parse the files using an ini parser.
-        $network = parse_ini_file($file, true);
+        $connection = parse_ini_file($file, true);
 
         // Require these items to be defined.
-        if (isset($network['netname']) && isset($network['address'])
-            && isset($network['port']) && isset($network['nick'])
-            && isset($network['user']) && isset($network['realname'])) {
+        if (isset($connection['address']) && isset($connection['port'])) {
           // Define optional parameters to their default values.
-          if (!isset($network['ssl'])) {
-            $network['ssl'] = false;
+          if (!isset($connection['ssl'])) {
+            $connection['ssl'] = false;
           }
 
-          if (!isset($network['pass'])) {
-            $network['pass'] = null;
+          if (!isset($connection['options'])
+              || !is_array($connection['options'])) {
+            $connection['options'] = array();
           }
 
-          if (!isset($network['channels'])) {
-            $network['channels'] = null;
-          }
+          // Restrict possible data types for certain values.
+          $connection['port'] = intval($connection['port']);
+          $connection['ssl'] = (bool)$connection['ssl'];
 
-          if (!isset($network['nspass'])) {
-            $network['nspass'] = null;
-          }
-
-          $network['port'] = intval($network['port']);
-          $network['ssl'] = (bool)$network['ssl'];
-          $network['channels'] = explode(',', $network['channels']);
           // Add the network to the connection manager.
           ConnectionManagement::newConnection(new Connection(
-            $network['netname'], $network['address'], $network['port'],
-            $network['ssl'], $network['pass'], $network['nick'],
-            $network['user'], $network['realname'], $network['channels'],
-            $network['nspass']));
+            $connection['address'], $connection['port'], $connection['ssl'],
+            $connection['options']);
         }
         else {
           // Uh-oh!
-          Logger::info("Network in file \"".$file."\" failed to parse.");
+          Logger::info("Connection in file \"".$file."\" failed to parse.");
         }
       }
     }
@@ -116,12 +106,13 @@
           usleep(10000);
         }
 
-        // Iterate through each event to find the connectionLoopEnd event.
+        // Iterate through each event to find the connectionLoopEndEvent event.
         foreach (EventHandling::getEvents() as $key => $event) {
-          if ($key == "connectionLoopEnd") {
+          if ($key == "connectionLoopEndEvent") {
             foreach ($event[2] as $id => $registration) {
-              // Trigger the connectionLoopEnd event for each registered module.
-              EventHandling::triggerEvent("connectionLoopEnd", $id);
+              // Trigger the connectionLoopEndEvent event for each registered
+              // module.
+              EventHandling::triggerEvent("connectionLoopEndEvent", $id);
             }
           }
         }

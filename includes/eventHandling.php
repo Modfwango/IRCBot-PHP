@@ -63,7 +63,7 @@
       if (isset(self::$events[$name][2][$id])) {
         $registration = self::$events[$name][2][$id];
         if (method_exists($registration[0], $registration[1])) {
-          if ($name != "connectionLoopEnd") {
+          if ($name != "connectionLoopEndEvent") {
             Logger::debug("Event '".$name."' has been triggered for '".
               $registration[0]->name."'");
           }

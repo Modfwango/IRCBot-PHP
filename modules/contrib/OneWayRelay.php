@@ -17,7 +17,7 @@
         return false;
       }
 
-      $connection = ConnectionManagement::getConnectionByNetworkName($netname);
+      $connection = $this->getConnectionByNetworkName($netname);
 
       if ($connection != false
           && strtolower($netname) != strtolower($this->destination[0])
@@ -93,7 +93,7 @@
         $realname = null;
       }
 
-      if (ConnectionManagement::getConnectionByNetworkName($netname) != false) {
+      if ($this->getConnectionByNetworkName($netname) != false) {
         return false;
       }
 
@@ -145,7 +145,7 @@
       $netname = $detail[0];
       $channel = $detail[1];
 
-      $connection = ConnectionManagement::getConnectionByNetworkName($netname);
+      $connection = $this->getConnectionByNetworkName($netname);
 
       if ($connection != false) {
         foreach ($this->relayConnections as &$c) {
@@ -162,7 +162,7 @@
     }
 
     private function delRelayConnection($netname) {
-      if (ConnectionManagement::getConnectionByNetworkName($netname) == false) {
+      if ($this->getConnectionByNetworkName($netname) == false) {
         return false;
       }
 
@@ -181,13 +181,24 @@
         array($this->destination, $this->relayConnections)));
     }
 
+    private function getConnectionByNetworkName($name) {
+      foreach (ConnectionManagement::getConnections() as $connection) {
+        $netname = $connection->getOption("netname");
+        if (is_string($netname) && strtolower(trim($netname))
+            == strtolower(trim($name))) {
+          return $connection;
+        }
+      }
+      return false;
+    }
+
     private function initMod() {
       if (!is_array($this->destination) || count($this->destination) < 2) {
         return false;
       }
 
       foreach ($this->relayConnections as $rc) {
-        if (!ConnectionManagement::getConnectionByNetworkName($rc[0])) {
+        if (!$this->getConnectionByNetworkName($rc[0])) {
           $c = new Connection($rc[0], $rc[1], $rc[2], $rc[3], $rc[4], $rc[5],
             $rc[6], $rc[7], $rc[8], $rc[9]);
           ConnectionManagement::newConnection($c);
@@ -425,7 +436,7 @@
         }
       }
 
-      $connection = ConnectionManagement::getConnectionByNetworkName($netname);
+      $connection = $this->getConnectionByNetworkName($netname);
 
       if ($connection != false) {
         if (is_array($this->destination) && count($this->destination) > 1) {

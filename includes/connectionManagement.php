@@ -6,32 +6,52 @@
       if (is_object($connection) && get_class($connection) == "Connection"
           && $connection->configured() == true) {
         self::$connections[] = $connection;
-        Logger::info("Network '".$connection->getNetworkName().
+        Logger::info("Connection '".$connection->getConnectionString().
           "' added to the connection manager.");
         return true;
       }
       return false;
     }
 
-    public static function getConnectionByNetworkName($name) {
-      foreach (self::$connections as $connection) {
-        if (strtolower(trim($name))
-            == strtolower(trim($connection->getNetworkName()))) {
-          return $connection;
-        }
+    public static function getConnectionByHost($host) {
+      $i = self::getConnectionIndexByHost($host);
+      if ($i != false) {
+        return self::getConnectionByIndex($i);
       }
       return false;
     }
 
-    public static function delConnectionByNetworkName($name) {
+    public static function getConnectionByIndex($i) {
+      if (isset(self::$connections[$i])) {
+        return self::$connections[$i];
+      }
+      return false;
+    }
+
+    public static function delConnectionByHost($host) {
+      $i = self::getConnectionIndexByHost($host);
+      if ($i != false) {
+        return self::delConnectionByIndex($i);
+      }
+      return false;
+    }
+
+    public static function delConnectionByIndex($i) {
+      if (isset(self::$connections[$i])) {self::$connections[$i]->disconnect();
+        Logger::info("Connection '".
+          self::$connections[$i]->getConnectionString().
+          "' removed from the connection manager.");
+        unset(self::$connections[$i]);
+        return true;
+      }
+      return false;
+    }
+
+    public static funciton getConnectionIndexByHost($host) {
       foreach (self::$connections as $key => $connection) {
-        if (strtolower(trim($name))
-            == strtolower(trim($connection->getNetworkName()))) {
-          $connection->disconnect();
-          unset(self::$connections[$key]);
-          Logger::info("Network '".$connection->getNetworkName().
-            "' removed from the connection manager.");
-          return true;
+        if (strtolower(trim($connection->getHost()))
+            == strtolower(trim($host))) {
+          return $key;
         }
       }
       return false;

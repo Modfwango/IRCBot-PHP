@@ -60,13 +60,8 @@
       return false;
     }
 
-    public function preprocessEvent($name, $registrations, $connection, $data) {
-      return true;
-    }
-
     public function isInstantiated() {
-      EventHandling::createEvent("connectionLoopEnd", $this, "preprocessEvent");
-      EventHandling::registerForEvent("connectionLoopEnd", $this,
+      EventHandling::registerForEvent("connectionLoopEndEvent", $this,
         "connectionLoopEnd");
       return true;
     }
