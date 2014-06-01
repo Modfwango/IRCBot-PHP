@@ -39,11 +39,12 @@
 
     public static function delConnectionByIndex($i) {
       if (isset(self::$connections[$i])) {
-        self::$connections[$i]->disconnect();
+        $c = self::$connections[$i];
         Logger::info("Connection '".
           self::$connections[$i]->getConnectionString().
           "' removed from the connection manager.");
         unset(self::$connections[$i]);
+        $c->disconnect();
         return true;
       }
       return false;
