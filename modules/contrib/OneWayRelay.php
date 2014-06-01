@@ -141,11 +141,22 @@
         return false;
       }
 
-      $connection = ConnectionManagement::
-        getConnectionByNetworkName($this->destination[0]);
+      $connection = $this->getConnectionByNetworkName($this->destination[0]);
       if ($connection != false) {
         $connection->send("PRIVMSG ".$this->destination[1]." :".$content);
       }
+    }
+
+    private function delConnectionByNetworkName($name) {
+      foreach (ConnectionManagement::getConnections() as $connection) {
+        $netname = $connection->getOption("netname");
+        if (is_string($netname) && strtolower(trim($netname))
+            == strtolower(trim($name))) {
+          ConnectionManagement::delConnectionByHost($connection->getHost());
+          return true;
+        }
+      }
+      return false;
     }
 
     private function delRelayChannel($detail) {
@@ -173,7 +184,7 @@
         return false;
       }
 
-      ConnectionManagement::delConnectionByNetworkName($netname);
+      $this->delConnectionByNetworkName($netname);
       foreach ($this->relayConnections as $key => $entry) {
         if (strtolower($entry[0]) == strtolower($netname)) {
           unset($this->relayConnections[$key]);
