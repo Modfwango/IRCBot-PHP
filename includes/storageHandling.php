@@ -2,7 +2,7 @@
   class StorageHandling {
     public static function createDirectory($module, $name) {
       $mname = $module->name;
-      $file = __PROJECTROOT__."/moddata/".$mname."/".$name;
+      $file = __PROJECTROOT__."/data/".$mname."/".$name;
 
       Logger::debug("Preparing to create directory at ".$file);
       if (self::initDirectories($mname, $name)) {
@@ -27,7 +27,7 @@
 
     public static function loadFile($module, $name) {
       $mname = $module->name;
-      $file = __PROJECTROOT__."/moddata/".$mname."/".$name;
+      $file = __PROJECTROOT__."/data/".$mname."/".$name;
 
       Logger::debug("Preparing to load file at ".$file);
       if (self::initDirectories($mname, $name)) {
@@ -52,7 +52,7 @@
 
     public static function saveFile($module, $name, $contents) {
       $mname = $module->name;
-      $file = __PROJECTROOT__."/moddata/".$mname."/".$name;
+      $file = __PROJECTROOT__."/data/".$mname."/".$name;
 
       Logger::debug("Preparing to write to file at ".$file);
       if (self::initDirectories($mname, $name)) {
@@ -77,14 +77,14 @@
     }
 
     private static function initDirectories($mname, $name = null) {
-      $moddata = __PROJECTROOT__."/moddata";
-      $moddir = $moddata."/".$mname;
+      $data = __PROJECTROOT__."/data";
+      $moddir = $data."/".$mname;
       $file = $moddir."/".$name;
 
-      if (!file_exists($moddata)) {
-        $ret = mkdir($moddata);
+      if (!file_exists($data)) {
+        $ret = mkdir($data);
         if ($ret == false) {
-          Logger::debug("Could not create folder at ".$moddata);
+          Logger::debug("Could not create folder at ".$data);
           return false;
         }
       }

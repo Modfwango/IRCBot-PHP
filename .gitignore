@@ -1,5 +1,5 @@
 .DS_Store
-moddata
+data
 conf/modules.conf
 conf/connections/*
 conf/connections/Example.conf
