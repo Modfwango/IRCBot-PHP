@@ -32,17 +32,40 @@
         $this->getConnectionString()."'");
       $this->socket = fsockopen(($this->ssl ? "tls://" : null).$this->host,
         $this->port);
-      stream_set_blocking($this->socket, 0);
-      return true;
+      if (is_resource($this->socket)) {
+        stream_set_blocking($this->socket, 0);
+
+        // Iterate through each event to find the connectionConnectedEvent
+        // event.
+        foreach (EventHandling::getEvents() as $key => $event) {
+          if ($key == "connectionConnectedEvent") {
+            foreach ($event[2] as $id => $registration) {
+              // Trigger the connectionConnectedEvent event for each registered
+              // module.
+              EventHandling::triggerEvent("connectionConnectedEvent", $id);
+            }
+          }
+        }
+
+        return true;
+      }
+      return false;
     }
 
     public function disconnect() {
       Logger::debug("Disconnecting from '".$this->getConnectionString().".'");
       fclose($this->socket);
-    }
-
-    public function getChannels() {
-      return implode(",", $this->channels);
+      // Iterate through each event to find the connectionConnectedEvent event.
+      foreach (EventHandling::getEvents() as $key => $event) {
+        if ($key == "connectionDisconnectedEvent") {
+          foreach ($event[2] as $id => $registration) {
+            // Trigger the connectionDisconnectedEvent event for each registered
+            // module.
+            EventHandling::triggerEvent("connectionDisconnectedEvent", $id);
+          }
+        }
+      }
+      return true;
     }
 
     public function getConnectionString() {
