@@ -132,6 +132,9 @@
       // Define the root of the project folder.
       define("__PROJECTROOT__", dirname(__FILE__));
 
+      // Change current working directory to project root.
+      chdir(__PROJECTROOT__);
+
       // Define start timestamp.
       define("__STARTTIME__", time());
 
