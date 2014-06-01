@@ -25,7 +25,10 @@
     function userLoginCallback($connection, $id, $nick, $loggedin) {
       $entry = $this->queue[$id];
       if ($loggedin == true) {
-        $connection->send("PRIVMSG ".$entry[1]." :".eval($entry[2]));
+        $output = explode("\n", trim(eval($entry[2])));
+        foreach ($output as $line) {
+          $connection->send("PRIVMSG ".$entry[1]." :".$line);
+        }
       }
       else {
         $connection->send("NOTICE ".$entry[0].
