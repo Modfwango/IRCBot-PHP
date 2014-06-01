@@ -4,7 +4,8 @@
 
     public static function newConnection($connection) {
       if (is_object($connection) && get_class($connection) == "Connection"
-          && $connection->configured() == true) {
+          && $connection->configured() == true
+          && self::getConnectionByHost($connection->getHost()) == false) {
         self::$connections[] = $connection;
         Logger::info("Connection '".$connection->getConnectionString().
           "' added to the connection manager.");
