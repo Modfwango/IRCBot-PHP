@@ -66,7 +66,7 @@
         }
 
         if ($entry[1] == "loaded") {
-          $list = ModuleManagement::getLoadedModules();
+          $list = ModuleManagement::getLoadedModuleNames();
           $connection->send("NOTICE ".$entry[0]." :These modules are currently".
             " loaded:  ".implode(", ", $list));
         }
