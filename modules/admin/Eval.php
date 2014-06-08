@@ -27,7 +27,11 @@
       if ($loggedin == true) {
         $output = explode("\n", trim(eval($entry[2])));
         foreach ($output as $line) {
-          $connection->send("PRIVMSG ".$entry[1]." :".$line);
+          $base = "PRIVMSG ".$entry[1]." :";
+          $length = (511 - strlen($base));
+          foreach (str_split($line, $length) as $outline) {
+            $connection->send("PRIVMSG ".$entry[1]." :".$line);
+          }
         }
       }
       else {
