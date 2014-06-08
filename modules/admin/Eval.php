@@ -30,7 +30,7 @@
           $base = "PRIVMSG ".$entry[1]." :";
           $length = (511 - strlen($base));
           foreach (str_split($line, $length) as $outline) {
-            $connection->send("PRIVMSG ".$entry[1]." :".$line);
+            $connection->send($base.$line);
           }
         }
       }
