@@ -33,7 +33,7 @@
           $length = (511 - strlen($base));
           foreach (str_split($line, $length) as $outline) {
             ModuleManagement::getModuleByName("Timer")->newTimer($i,
-              $connection, "send", $base.$line);
+              $connection, "send", $base.$outline);
             $i++;
           }
         }
