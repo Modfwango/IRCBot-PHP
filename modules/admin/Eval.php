@@ -1,6 +1,7 @@
 <?php
   class @@CLASSNAME@@ {
-    public $depend = array("ChannelMessageEvent", "UserIdentification");
+    public $depend = array("ChannelMessageEvent", "Timer",
+      "UserIdentification");
     public $name = "Eval";
     private $queue = array();
 
@@ -26,12 +27,14 @@
       $entry = $this->queue[$id];
       if ($loggedin == true) {
         $output = explode("\n", trim(eval($entry[2])));
+        $i = 0;
         foreach ($output as $line) {
           $base = "PRIVMSG ".$entry[1]." :";
           $length = (511 - strlen($base));
           foreach (str_split($line, $length) as $outline) {
-            $connection->send($base.$line);
-            usleep(1000);
+            ModuleManagement::getModuleByName("Timer")->newTimer($i,
+              $connection, "send", $base.$line);
+            $i++;
           }
         }
       }
