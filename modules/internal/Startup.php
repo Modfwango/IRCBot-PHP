@@ -25,8 +25,6 @@
           $connection->send("PRIVMSG NickServ :identify ".
             $connection->getOption('nspass'));
         }
-        Logger::debug("Decloaking on '".$connection->getOption('netname').".'");
-        $connection->send("MODE ".$connection->getOption('nick')." -x");
       }
       else {
         Logger::debug("Joining channels on '".$connection->getOption('netname').
