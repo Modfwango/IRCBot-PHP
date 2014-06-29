@@ -1,3 +1,3 @@
 #!/bin/sh
-git pull
-git sumodule update --init
+git pull 2>&1
+git submodule update --init 2>&1
