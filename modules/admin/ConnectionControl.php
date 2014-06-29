@@ -57,7 +57,7 @@
         if ($entry[1] == "load") {
           $file = __PROJECTROOT__."/conf/connections/".$entry[2].".conf";
           if (is_readable($file)) {
-            if (ConnectionManagement::loadConnectionFile($file)) {
+            if (ConnectionManagement::loadConnectionFile($file, true)) {
               $connection->send("NOTICE ".$entry[0]." :\"".$entry[2].
                 "\" has been loaded.");
             }
@@ -93,7 +93,7 @@
             }
           }
           if ($continue == true
-              && ConnectionManagement::loadConnectionFile($file)) {
+              && ConnectionManagement::loadConnectionFile($file, true)) {
             $connection->send("NOTICE ".$entry[0]." :\"".$entry[2].
               "\" has been reloaded.");
           }
