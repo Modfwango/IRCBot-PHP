@@ -11,7 +11,7 @@
       $message = $data[3];
 
       $ex = explode(" ", $message);
-      if (preg_match("/^".$connection->getOption('nick').". load (.+)/i",
+      if (preg_match("/^".$connection->getOption('nick').". module load (.+)/i",
           $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
@@ -21,17 +21,17 @@
         }
       }
 
-      if (preg_match("/^".$connection->getOption('nick').". loaded/i",
+      if (preg_match("/^".$connection->getOption('nick').". module list/i",
           $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
           $this->queue[$module->testLogin($connection, $this,
-            "userLoginCallback", $source[0])] = array($source[0], "loaded");
+            "userLoginCallback", $source[0])] = array($source[0], "list");
         }
       }
 
-      if (preg_match("/^".$connection->getOption('nick').". reload (.+)/i",
-          $message, $matches)) {
+      if (preg_match("/^".$connection->getOption('nick').
+          ". module reload (.+)/i", $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
           $this->queue[$module->testLogin($connection, $this,
@@ -40,8 +40,8 @@
         }
       }
 
-      if (preg_match("/^".$connection->getOption('nick').". unload (.+)/i",
-          $message, $matches)) {
+      if (preg_match("/^".$connection->getOption('nick').
+          ". module unload (.+)/i", $message, $matches)) {
         $module = ModuleManagement::getModuleByName("UserIdentification");
         if (is_object($module)) {
           $this->queue[$module->testLogin($connection, $this,
@@ -65,7 +65,7 @@
           }
         }
 
-        if ($entry[1] == "loaded") {
+        if ($entry[1] == "list") {
           $list = ModuleManagement::getLoadedModuleNames();
           $connection->send("NOTICE ".$entry[0]." :These modules are currently".
             " loaded:  ".implode(", ", $list));
