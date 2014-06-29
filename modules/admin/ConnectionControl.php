@@ -84,10 +84,10 @@
         if ($entry[1] == "reload") {
           $continue = false;
           $file = __PROJECTROOT__."/conf/connections/".$entry[2].".conf";
-          foreach (ConnectionManagement::getConnections() as $connection) {
-            if ($connection->getOption('file') == realpath($file)) {
+          foreach (ConnectionManagement::getConnections() as $conn) {
+            if ($conn->getOption('file') == realpath($file)) {
               if (ConnectionManagement::delConnectionByHost(
-                  $connection->getHost())) {
+                  $conn->getHost())) {
                 $continue = true;
               }
             }
@@ -106,10 +106,10 @@
         if ($entry[1] == "unload") {
           $continue = false;
           $file = __PROJECTROOT__."/conf/connections/".$entry[2].".conf";
-          foreach (ConnectionManagement::getConnections() as $connection) {
-            if ($connection->getOption('file') == realpath($file)) {
+          foreach (ConnectionManagement::getConnections() as $conn) {
+            if ($conn->getOption('file') == realpath($file)) {
               if (ConnectionManagement::delConnectionByHost(
-                  $connection->getHost())) {
+                  $conn->getHost())) {
                 $continue = true;
               }
             }
