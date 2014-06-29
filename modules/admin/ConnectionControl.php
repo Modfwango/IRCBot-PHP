@@ -72,7 +72,7 @@
           }
         }
 
-        if ($entry[1] == "loaded") {
+        if ($entry[1] == "list") {
           $list = ConnectionManagement::getConnections();
           foreach ($list as &$item) {
             $item = $item->getOption('netname');
