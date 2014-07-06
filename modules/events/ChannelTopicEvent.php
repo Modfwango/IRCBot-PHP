@@ -3,8 +3,6 @@
     public $name = "ChannelTopicEvent";
 
     public function preprocessEvent($name, $registrations, $connection, $data) {
-      $preprocessors = $registrations[1];
-      $registrations = $registrations[0];
       $ex = explode(" ", trim($data));
       if ($ex[1] == "TOPIC" && substr($ex[2], 0, 1) == "#" && stristr($ex[0],
           "@")) {

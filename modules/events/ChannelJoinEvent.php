@@ -3,8 +3,6 @@
     public $name = "ChannelJoinEvent";
 
     public function preprocessEvent($name, $registrations, $connection, $data) {
-      $preprocessors = $registrations[1];
-      $registrations = $registrations[0];
       $ex = explode(" ", trim($data));
 
       if ($ex[1] == "JOIN") {
