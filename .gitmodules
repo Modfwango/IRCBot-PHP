@@ -1,0 +1,3 @@
+[submodule ".modfwango"]
+	path = .modfwango
+	url = https://github.com/ClayFreeman/Modfwango.git
