@@ -37,7 +37,7 @@
           $eval = implode(" ", $ex);
           $output = explode("\n", trim(eval($eval)));
           foreach ($output as $line) {
-            $connection->send(trim($line));
+            $connection->send($line);
           }
         }
       }
