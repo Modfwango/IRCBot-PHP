@@ -3,7 +3,7 @@
     public $depend = array("ConnectionDisconnectedEvent", "RawEvent");
     public $name = "TelnetControl";
     private $auth = array();
-    private $credentials = null;
+    private $credentials = array();
 
     public function receiveConnectionCreated($name, $connection) {
       $connection->setOption("id", hash("sha256", rand().$connection->getIP()));
@@ -20,12 +20,14 @@
           if (strtolower($ex[0]) == "login"
               && !in_array($connection->getOption("id"), $this->auth)
               && is_array($this->credentials)) {
-            if (strtolower($ex[1]) == strtolower($this->credentials[0])
-                && hash("sha256", $ex[2]) == $this->credentials[1]) {
-              $this->auth[] = $connection->getOption("id");
-              $connection->send("Login successful.");
+            foreach ($this->credentials as $user) {
+              if (strtolower($ex[1]) == strtolower($user[0])
+                  && hash("sha256", $ex[2]) == $user[1]) {
+                $this->auth[] = $connection->getOption("id");
+                $connection->send("Login successful.");
+              }
             }
-            else {
+            if (!in_array($connection->getOption("id"), $this->auth)) {
               $connection->send("Login failed.");
             }
           }
@@ -52,14 +54,19 @@
     public function isInstantiated() {
       $contents = StorageHandling::loadFile($this, "credentials.txt");
       if ($contents == false) {
-        $contents = "username ".hash("sha256", "password");
+        $contents = "username ".hash("md5", "password");
         StorageHandling::saveFile($this, "credentials.txt", $contents);
+        $contents = array(explode(" ", $contents));
       }
       if (stristr($contents, "\n")) {
-        $contents = explode("\n", $contents);
-        $contents = trim($contents[0]);
+        foreach (explode("\n", $contents) as &$line) {
+          $line = explode(" ", trim($line));
+        }
       }
-      $this->credentials = explode(" ", $contents);
+      else {
+        $contents = array(explode(" ", trim($contents)));
+      }
+      $this->credentials = $contents;
       EventHandling::registerForEvent("connectionCreatedEvent", $this,
         "receiveConnectionCreated");
       EventHandling::registerForEvent("connectionDisconnectedEvent", $this,
