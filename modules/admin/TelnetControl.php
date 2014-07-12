@@ -58,8 +58,9 @@
         StorageHandling::saveFile($this, "credentials.txt", $contents);
         $contents = array(explode(" ", $contents));
       }
-      if (stristr($contents, "\n")) {
-        foreach (explode("\n", $contents) as &$line) {
+      elseif (stristr($contents, "\n")) {
+        $contents = explode("\n", $contents);
+        foreach ($contents as &$line) {
           $line = explode(" ", trim($line));
         }
       }
