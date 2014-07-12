@@ -100,14 +100,19 @@
       $this->relayConnections[] = array($netname, $address, $port, $ssl,
         $serverpass, $nick, $ident, $realname, array(), $nspass);
       $this->flushConfig();
-      $c = new Connection($address, $port, $ssl, array(
-        'netname' => $netname,
-        'pass' => $serverpass,
-        'nick' => $nick,
-        'user' => $ident,
-        'realname' => $realname,
-        'channels' => null,
-        'nspass' => $nspass
+      $c = new Connection("0", array(
+        $address,
+        $port,
+        $ssl,
+        array(
+          'netname' => $netname,
+          'pass' => $serverpass,
+          'nick' => $nick,
+          'user' => $ident,
+          'realname' => $realname,
+          'channels' => null,
+          'nspass' => $nspass
+        )
       ));
       ConnectionManagement::newConnection($c);
       $c->connect();
@@ -217,14 +222,19 @@
 
       foreach ($this->relayConnections as $rc) {
         if (!$this->getConnectionByNetworkName($rc[0])) {
-          $c = new Connection($rc[1], $rc[2], $rc[3], array(
-            'netname' => $rc[0],
-            'pass' => $rc[4],
-            'nick' => $rc[5],
-            'user' => $rc[6],
-            'realname' => $rc[7],
-            'channels' => implode(',', $rc[8]),
-            'nspass' => $rc[9]
+          $c = new Connection("0", array(
+            $rc[1],
+            $rc[2],
+            $rc[3],
+            array(
+              'netname' => $rc[0],
+              'pass' => $rc[4],
+              'nick' => $rc[5],
+              'user' => $rc[6],
+              'realname' => $rc[7],
+              'channels' => implode(',', $rc[8]),
+              'nspass' => $rc[9]
+            )
           ));
           ConnectionManagement::newConnection($c);
           $c->connect();
