@@ -4,7 +4,7 @@ IRCBot-PHP
 IRCBot-PHP is an IRC bot framework written on top of the
 [Modfwango](http://modfwango.com) socket framework.  This bot is meant to be
 extended upon by
-[Modfwango-compliant](https://github.com/ClayFreeman/Modfwango#development)
+[Modfwango-compliant](https://github.com/Modfwango/Modfwango#development)
 modules to incorporate customized functionality, although, this project does
 provide several built-in modules custom tailored to IRC bots.
 
