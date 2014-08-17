@@ -1,5 +1,5 @@
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $depend = array("ConnectionConnectedEvent", "ConnectionCreatedEvent",
       "NumericEvent");
     public $name = "Startup";

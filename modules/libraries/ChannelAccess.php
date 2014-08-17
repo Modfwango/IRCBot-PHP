@@ -1,5 +1,5 @@
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $depend = array("NumericEvent");
     public $name = "ChannelAccess";
     private $listening = false;

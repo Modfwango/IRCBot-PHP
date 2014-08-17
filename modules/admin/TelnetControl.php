@@ -1,5 +1,5 @@
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $depend = array("ConnectionDisconnectedEvent", "RawEvent");
     public $name = "TelnetControl";
     private $auth = array();

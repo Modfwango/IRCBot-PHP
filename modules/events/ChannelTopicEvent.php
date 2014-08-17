@@ -1,5 +1,5 @@
 <?php
-  class @@CLASSNAME@@ {
+  class __CLASSNAME__ {
     public $name = "ChannelTopicEvent";
 
     public function preprocessEvent($name, $registrations, $connection, $data) {
